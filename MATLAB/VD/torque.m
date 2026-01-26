@@ -103,7 +103,7 @@ xlim([-30 30])
 rooty = @(x,y) sqrt((ex - x).^2 + (ey - y).^2);
 fun = @(x,y) ((6*Fz)/(a^3*b) .* (a/2 - x) .* (a/2 + x)).*(sqrt((ex - x).^2 + (ey - y).^2));
 
-Mzft = integral2(fun, x0, x1, y0, y1);
+Mzft = mu * integral2(fun, x0, x1, y0, y1);
 
 Mzf = Mzft*cosd(KPI)*cosd(caster); %Nmm
 Mzf = Mzf/1000; %Nm
