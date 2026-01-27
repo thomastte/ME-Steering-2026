@@ -1,11 +1,16 @@
 clc; close all; clear; 
 %Optimum Lap Power Model
-RPM = 0.1:1:20e3;
+RPM = 0.1:1:13.25e3;
+RPM2 = 0.1:1:20e3;
 kW = 80; 
 
 T = min(31.6*4, (kW*9550)./RPM);
-
+T2 = min(31.6*4, (kW*9550)./RPM2);
+figure
+subplot(2,1,1)
 plot(RPM,T)
+subplot(2,1,2)
+plot(RPM2,T2)
 
 %Steering Angle
 data = readtable("yawrate.txt");
