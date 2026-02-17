@@ -2,11 +2,11 @@ clear; close all; clc;
 
 SPEED= 100; % kph
 
-WF = 80 ; % kg
+WF = 2*65.925 ; % kg
 
-WR = 120;
+WR = 2*80.575;
 
-L = 1575; % wheelbase mm
+L = 1525; % wheelbase mm
 
 WB = L/1000;
 
@@ -46,13 +46,15 @@ BETA = 0; % initial sideslip
 
 AYG = 0; % initial Ay
 
-R = 0; % initial yaw elocity
+R = 0; % initial yaw velocity
 
 rwa = 0; % reference wheel steer angle
 
 dt = .01; % integration interval
 
 swa_sys =tf(1,[.02 1]); % .02 sec time constant for steer input
+%figure
+%step(swa_sys)
 
 time = 0:dt:2;
 

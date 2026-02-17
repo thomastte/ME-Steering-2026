@@ -12,7 +12,7 @@ tw = 1200e-3; %trackwidth in meters
 CG = 220e-3; %center of gravity height in m
 weight = 290; %kg
 m = 290*9.81; %mass in N
-dist = 0.5; 
+dist = 0.45; 
 frontMass = m*dist %weight on front axle
 frontCorner = frontMass/2 %front corner mass
 Ay = 1; % lateral accel in G
@@ -84,6 +84,6 @@ grid on
 title('Steering Wheel Torque at given Slip Angle')
 xlabel('Slip Angle (deg)')
 ylabel('Steering Wheel Torque')
-xlim([-10 10])
+xlim([0 10])
 legend('Torque','Maximum')
 
