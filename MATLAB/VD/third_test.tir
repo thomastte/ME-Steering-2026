@@ -1,0 +1,224 @@
+[MDI_HEADER]
+FILE_TYPE                    = 'tir'             
+FILE_VERSION                 = 3                 
+FILE_FORMAT                  = 'ASCII'           
+$-----------------------------------------------------------------units
+[UNITS]
+LENGTH                       = 'meter'           
+FORCE                        = 'newton'          
+ANGLE                        = 'radians'         
+MASS                         = 'kg'              
+TIME                         = 'second'          
+$-----------------------------------------------------------------model
+[MODEL]
+FITTYP                       = 61                
+TYRESIDE                     = 'LEFT'            
+LONGVL                       = 10                
+VXLOW                        = 1                 
+$-------------------------------------------------------------dimension
+[DIMENSION]
+UNLOADED_RADIUS              = 0.23              
+$--------------------------------------------------operating conditions
+[OPERATING_CONDITIONS]
+NOMPRES                      = 84000             
+$---------------------------------------------------------------inertia
+[INERTIA]
+$--------------------------------------------------------------vertical
+[VERTICAL]
+FNOMIN                       = 1080              
+$------------------------------------------------------------structural
+[STRUCTURAL]
+$---------------------------------------------------------contact patch
+[CONTACT_PATCH]
+$----------------------------------------------inflation pressure range
+[INFLATION_PRESSURE_RANGE]
+$--------------------------------------------------vertical force range
+[VERTICAL_FORCE_RANGE]
+$-------------------------------------------------------long slip range
+[LONG_SLIP_RANGE]
+$------------------------------------------------------slip angle range
+[SLIP_ANGLE_RANGE]
+$-----------------------------------------------inclination angle range
+[INCLINATION_ANGLE_RANGE]
+$--------------------------------------------------scaling coefficients
+[SCALING_COEFFICIENTS]
+LFZO                         = 1                 
+LCX                          = 1                 
+LMUX                         = 1                 
+LEX                          = 1                 
+LKX                          = 1                 
+LHX                          = 1                 
+LVX                          = 1                 
+LCY                          = 1                 
+LMUY                         = 1                 
+LEY                          = 1                 
+LKY                          = 1                 
+LHY                          = 1                 
+LVY                          = 1                 
+LTR                          = 1                 
+LRES                         = 1                 
+LXAL                         = 1                 
+LYKA                         = 1                 
+LVYKA                        = 1                 
+LS                           = 1                 
+LKYC                         = 1                 
+LKZC                         = 1                 
+LVMX                         = 1                 
+LMX                          = 1                 
+LMY                          = 1                 
+LMP                          = 1                 
+$---------------------------------------------longitudinal coefficients
+[LONGITUDINAL_COEFFICIENTS]
+PCX1                         = 1.5               
+PDX1                         = 2.5435            
+PDX2                         = -0.64632          
+PDX3                         = 11.0199           
+PEX1                         = -6.4596e-11       
+PEX2                         = -0.84982          
+PEX3                         = -0.6              
+PEX4                         = 0.9               
+PKX1                         = 42.6771           
+PKX2                         = -0.011985         
+PKX3                         = -0.53674          
+PHX1                         = 0.0017597         
+PHX2                         = -0.001133         
+PVX1                         = -0.085025         
+PVX2                         = 0.1               
+PPX1                         = 0.25355           
+PPX2                         = 12.2145           
+PPX3                         = -0.055934         
+PPX4                         = -2.6628           
+RBX1                         = 5                 
+RBX2                         = 5                 
+RBX3                         = 0                 
+RCX1                         = 1                 
+REX1                         = -1                
+REX2                         = -0.1              
+RHX1                         = 0                 
+$----------------------------------------------overturning coefficients
+[OVERTURNING_COEFFICIENTS]
+QSX1                         = 0                 
+QSX2                         = 1.5               
+QSX3                         = 0.1               
+QSX4                         = 0.1               
+QSX5                         = 0                 
+QSX6                         = 0                 
+QSX7                         = 0.1               
+QSX8                         = 0                 
+QSX9                         = 0                 
+QSX10                        = 0                 
+QSX11                        = 0                 
+QSX12                        = 0                 
+QSX13                        = 0                 
+QSX14                        = 0                 
+PPMX1                        = 0                 
+$--------------------------------------------------lateral coefficients
+[LATERAL_COEFFICIENTS]
+PCY1                         = 1.5               
+PDY1                         = 2.1471            
+PDY2                         = -0.42791          
+PDY3                         = 8.3327            
+PEY1                         = 0.35224           
+PEY2                         = -0.17141          
+PEY3                         = 0.10605           
+PEY4                         = -3.7833           
+PEY5                         = -62.9571          
+PKY1                         = -31.419           
+PKY2                         = 1.5115            
+PKY3                         = 0.30996           
+PKY4                         = 2                 
+PKY5                         = 38.0826           
+PKY6                         = -3.9753           
+PKY7                         = -1.8011           
+PHY1                         = 0.0024113         
+PHY2                         = 0.00049845        
+PVY1                         = 0.10412           
+PVY2                         = -0.053643         
+PVY3                         = 0.53589           
+PVY4                         = 1.2244            
+PPY1                         = 0.40814           
+PPY2                         = 1.0811            
+PPY3                         = -0.51005          
+PPY4                         = -0.29281          
+PPY5                         = -0.8874           
+RBY1                         = 5                 
+RBY2                         = 2                 
+RBY3                         = 0.02              
+RBY4                         = 0                 
+RCY1                         = 1                 
+REY1                         = -0.1              
+REY2                         = 0.1               
+RHY1                         = 0                 
+RHY2                         = 0                 
+RVY1                         = 0                 
+RVY2                         = 0                 
+RVY3                         = 0                 
+RVY4                         = 0                 
+RVY5                         = 0                 
+RVY6                         = 0                 
+$--------------------------------------------------rolling coefficients
+[ROLLING_COEFFICIENTS]
+QSY1                         = 0                 
+QSY2                         = 0                 
+QSY3                         = 0                 
+QSY4                         = 0                 
+QSY5                         = 0                 
+QSY6                         = 0                 
+QSY7                         = 0                 
+QSY8                         = 0                 
+$-------------------------------------------------aligning coefficients
+[ALIGNING_COEFFICIENTS]
+QBZ1                         = 0.36866           
+QBZ2                         = 0.87296           
+QBZ3                         = 0.64959           
+QBZ4                         = 168.8149          
+QBZ5                         = -172.3075         
+QBZ9                         = -33.2482          
+QBZ10                        = -2.3968           
+QCZ1                         = 14.2367           
+QDZ1                         = 0.10605           
+QDZ2                         = -0.11593          
+QDZ3                         = 4.9221            
+QDZ4                         = -8.2609           
+QDZ6                         = -0.023114         
+QDZ7                         = 0.034508          
+QDZ8                         = -0.92786          
+QDZ9                         = 2.4605            
+QDZ10                        = -11.696           
+QDZ11                        = -63.4068          
+QEZ1                         = -0.069508         
+QEZ2                         = -0.3322           
+QEZ3                         = -0.2814           
+QEZ4                         = 3.6678            
+QEZ5                         = -275.1131         
+QHZ1                         = -0.019925         
+QHZ2                         = 1.2787            
+QHZ3                         = -1.7534           
+QHZ4                         = 0.77276           
+PPZ1                         = 0                 
+PPZ2                         = 0                 
+SSZ1                         = 0                 
+SSZ2                         = 0                 
+SSZ3                         = 0                 
+SSZ4                         = 0                 
+$-------------------------------------------------turnslip coefficients
+[TURNSLIP_COEFFICIENTS]
+PDXP1                        = 0                 
+PDXP2                        = 0                 
+PDXP3                        = 0                 
+PKYP1                        = 0                 
+PDYP1                        = 0                 
+PDYP2                        = 0                 
+PDYP3                        = 0                 
+PDYP4                        = 0                 
+PHYP1                        = 0                 
+PHYP2                        = 0                 
+PHYP3                        = 0                 
+PHYP4                        = 0                 
+PECP1                        = 0                 
+PECP2                        = 0                 
+QDTP1                        = 0                 
+QCRP1                        = 0                 
+QCRP2                        = 0                 
+QBRP1                        = 0                 
+QDRP1                        = 0                 
