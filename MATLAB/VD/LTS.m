@@ -19,7 +19,7 @@ NPistonAxle = 4; % number of pistons per axle
 DiscRadius = 0.15; % Brake disc radius - meters
 
 %% Tyres
-ScaleFctrs = randi(1,[27 1]);
+ScaleFctrs = ones(27,1);
 Fext = [(293*9.81)/4 (293*9.81)/4 (293*9.81)/4 (293*9.81)/4];
 UnloadedRadius = 0.23; % Unloaded tyre radius - m
 LoadedRaidus = 0.2; % Loaded tyre radius - m
