@@ -30,3 +30,10 @@ RearPressure = 2.1e5;
 %% DriveTrain
 
 %% PowerTrain
+
+
+d = 38.16e-3; 
+r = 19.1e-3; 
+kg = 1.81; 
+N = 9.81*kg; 
+T = N*r
