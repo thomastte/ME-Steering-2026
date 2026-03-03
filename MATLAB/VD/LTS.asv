@@ -4,10 +4,11 @@ clc; clear; close all;
 AR26.Mass = 293; % Total car mass with average driver - kg
 AR26.WheelBase = 1525e-3; % Car wheelbase - m
 AR26.CGHeight = 230e-3; % Center of Gravity height - m
-AR26.aLength = 5; 
-AR26.bLength = 5; 
+AR26.aLength = AR26.WheelBase*0.45; 
+AR26.bLength = AR26.WheelBase - AR26.aLength; 
 AR26.FrontTrackwidth = 1210e-3; % Front Trackwidth - m
-AR26.RearTrackWidth = 1209e-3
+AR26.RearTrackWidth = 1209e-3; % Rear Trackwidth - m
+
 
 %% Aerodynamics
 
@@ -15,7 +16,21 @@ AR26.RearTrackWidth = 1209e-3
 %% Suspension
 
 %% Steering
-
+AR26.SteeringWheelBreakPointsOutside = [0, 16.7, 30.25, 44.2, 61.4, 78.35, 86];
+AR26.SteeringWheelBreakPointsInside = flip(-AR26.SteeringWheelBreakPointsOutside);
+AR26.SteeringWheelBreakPoints = [AR26.SteeringWheelBreakPointsInside, AR26.SteeringWheelBreakPointsOutside];
+AR26.WheelBreakPointsOutside = [0, 5, 10, 15, 20, 25, 30];
+AR26.WheelBreakPointsInside = flip(AR26.WheelBreakPointsOutside);
+AR26.WheelBreakPoints = [AR26.WheelBreakPointsInside,AR26.WheelBreakPointsOutside];
+figure
+plot(AR26.SteeringWheelBreakPointsOutside, AR26.WheelBreakPointsOutside)
+hold on
+plot(AR26.SteeringWheelBreakPointsInside, AR26.WheelBreakPointsInside)
+AR26.RackWidth = 
+AR26.SteeringArmLength = 
+AR26.TieRodLength = 
+AR26.RackAxisLength = 79.52
+AR26.PinionRadius = 20e-3; % Pinion radius - m
 %% Brakes
 AR26.FrntBrkBias = 0.75; % Front brake bias - ratio
 AR26.RearBrkBias = 1 -AR26.FrntBrkBias; % Rear brake bias - ratio
@@ -41,3 +56,4 @@ AR26.RearPressure = 2.1e5;
 AR26.MaxTorque = 31.6; % Max torque per motor
 
 
+sqrt(4.5^2 + 0.93^2)
