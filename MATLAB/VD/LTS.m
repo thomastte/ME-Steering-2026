@@ -5,7 +5,7 @@ AR26.Mass = 293; % Total car mass with average driver - kg
 AR26.WheelBase = 1525e-3; % Car wheelbase - m
 AR26.FrontTrackwidt = 1260e-3 % Front Trackwidth
 AR26.CGHeight = 230e-3; % Center of Gravity height - m
-AR26.aLength = AR26.WheelBase*0.45; 
+AR26.aLength = AR26.WheelBase*0.55; 
 AR26.bLength = AR26.WheelBase - AR26.aLength; 
 AR26.FrontTrackwidth = 1210e-3; % Front Trackwidth - m
 AR26.RearTrackWidth = 1209e-3; % Rear Trackwidth - m
@@ -39,19 +39,21 @@ AR26.MaxBrakePressure = 100e5; % Maximum brake bias - Pa
 AR26.PistonDiam = 25e-3; % Piston Diameter - meters
 AR26.PistonArea = pi*(AR26.PistonDiam/2)^2; % Piston area - m^2
 AR26.NPistonAxle = 4; % number of pistons per axle
-AR26.DiscRadius = 0.15; % Brake disc radius - meters
+AR26.DiscRadius = 0.177; % Brake disc radius - meters
 
 %% Tyres
 AR26.ScaleFctrs = ones(27,1);
 AR26.Fext = [(293*9.81)/4 (293*9.81)/4 (293*9.81)/4 (293*9.81)/4];
-AR26.UnloadedRadius = 0.23; % Unloaded tyre radius - m
-AR26.LoadedRaidus = 0.2; % Loaded tyre radius - m
-AR26.FrontPressure = 2e5;
-AR26.RearPressure = 2.1e5;
+AR26.UnloadedRadius = 0.203; % Unloaded tyre radius - m
+AR26.LoadedRadius = 0.2; % Loaded tyre radius - m
+AR26.FrontPressure = 1e5;
+AR26.RearPressure = 1.1e5;
+AR26.TireWidth = 7.5*25.4e-3;
+AR26.RimRadius = 5*25.4e-3;
 
 
 %% DriveTrain
-
+AR26.GearRatio = 11.655; 
 
 %% PowerTrain
 AR26.MaxTorque = 31.6; % Max torque per motor
@@ -59,6 +61,6 @@ AR26.MaxTorque = 31.6; % Max torque per motor
 
 
 %% Initial Conditions
-AR26.Vx0 = 1; % inital x velocity - m/s
-AR26.Omega0 = AR26.Vx0/AR26.LoadedRaidus; % Initial wheelspeed - rad/s
+AR26.Vx0 = 0; % inital x velocity - m/s
+AR26.Omega0 = AR26.Vx0/AR26.LoadedRadius; % Initial wheelspeed - rad/s
 
