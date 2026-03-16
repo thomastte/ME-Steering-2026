@@ -4,12 +4,12 @@ clc; clear; close all;
 AR26.Mass = 293; % Total car mass with average driver - kg
 AR26.WheelBase = 1540e-3; % Car wheelbase - m
 AR26.FrontTrackwidth = 1110e-3; % Front Trackwidth - m
-AR26.RearTrackWidth = 1110e-3; % Rear Trackwidth - m
+AR26.RearTrackWidth = 1109e-3; % Rear Trackwidth - m
 AR26.CGHeight = 241e-3; % Center of Gravity height - m
 AR26.aLength = AR26.WheelBase*0.5541; % Distance from CoM to front axle
 AR26.bLength = AR26.WheelBase - AR26.aLength; % Distance from CoM to rear axle
 AR26.CGLateral = 0; % Lateral CG offset
-AR26.Izz = 450;
+AR26.Izz = 1;
 AR26.Iyy = 1;
 %% Aerodynamics
 AR26.CL = 4.2; % Coefficient of downforce(lift)
@@ -36,7 +36,7 @@ AR26.PinionRadius = 20e-3; % Pinion radius - m
 
 %% Brakes
 AR26.FrntBrkBias = 0.75; % Front brake bias - ratio
-AR26.RearBrkBias = 1 - AR26.FrntBrkBias; % Rear brake bias - ratio
+AR26.RearBrkBias = 1 -AR26.FrntBrkBias; % Rear brake bias - ratio
 AR26.MaxBrakePressure = 100e5; % Maximum brake bias - Pa
 AR26.PistonDiam = 25e-3; % Piston Diameter - meters
 AR26.PistonArea = pi*(AR26.PistonDiam/2)^2; % Piston area - m^2
@@ -52,8 +52,7 @@ AR26.FrontPressure = 2e5;
 AR26.RearPressure = 2.1e5;
 AR26.TireWidth = 7.5*25.4e-3;
 AR26.RimRadius = 5*25.4e-3;
-AR26.KappaMax = 1; % Maximum allowable slip ratio
-AR26.KappaMin = -1; %Minimum allowable slip ratio
+AR26.KappaMax = 1
 
 %% DriveTrain
 AR26.GearRatio = 11.655; 
