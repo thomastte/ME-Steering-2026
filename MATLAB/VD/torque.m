@@ -9,6 +9,7 @@ T2 = min(31.6*4, (kW*9550)./RPM2);
 figure
 subplot(2,1,1)
 plot(RPM,T)
+xlim([0 20e3])
 subplot(2,1,2)
 plot(RPM2,T2)
 
@@ -65,7 +66,8 @@ plot(distance,wheel_angle)
 subplot(2,1,2)
 plot(distance,speed2)
 
-
+ScaleFctrs = randi(1,[27 1]);
+Fext = [(293*9.81)/4 (293*9.81)/4 (293*9.81)/4 (293*9.81)/4 ]
 
 %% 
 clc; clear; close all; 
