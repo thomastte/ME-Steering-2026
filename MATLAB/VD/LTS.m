@@ -10,7 +10,7 @@ AR26.aLength = AR26.WheelBase*0.5541; % Distance from CoM to front axle
 AR26.bLength = AR26.WheelBase - AR26.aLength; % Distance from CoM to rear axle
 AR26.CGLateral = 0; % Lateral CG offset
 AR26.Izz = 450;
-AR26.Iyy = 1;
+AR26.Iyy = 250;
 %% Aerodynamics
 AR26.CL = 4.2; % Coefficient of downforce(lift)
 AR26.CD = 0.8; %Coefficient of drag
