@@ -1,0 +1,100 @@
+[2026-01-27T09:25:49Z] [ERROR] Could not read user token. File doesn't exist.
+[2026-01-27T09:25:49Z] [ERROR] Could not read user token. File doesn't exist.
+[2026-01-27T09:25:49Z] [INFO] Checking for license key authenticity...
+[2026-01-27T09:25:49Z] [INFO] License key is authentic, parsing embedded data...
+[2026-01-27T09:25:49Z] [INFO] License expiry: 2026-10-15T21:58:08Z.
+[2026-01-27T09:25:49Z] [INFO] Fetching license data online...
+[2026-01-27T09:25:50Z] [INFO] Validating user token...
+[2026-01-27T09:25:50Z] [ERROR] User token is INVALID.
+[2026-01-27T09:25:50Z] [INFO] License data updated successfully.
+[2026-01-27T09:25:50Z] [INFO] Looking for a certificate file at licensing\dir\license-main.lic'.
+[2026-01-27T09:25:50Z] [ERROR] Failed to checkout license certificate '111421f2-bdc4-414d-9b9d-e847e3680d84'.
+[2026-01-27T09:25:50Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:25:50Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:25:50Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:25:51Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:25:51Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:25:51Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:25:52Z] [ERROR] Could not read user token. File doesn't exist.
+[2026-01-27T09:25:52Z] [INFO] Checking for license key authenticity...
+[2026-01-27T09:25:52Z] [INFO] License key is authentic, parsing embedded data...
+[2026-01-27T09:25:52Z] [INFO] License expiry: 2026-09-23T00:11:46Z.
+[2026-01-27T09:25:52Z] [INFO] Fetching license data online...
+[2026-01-27T09:25:52Z] [INFO] Validating user token...
+[2026-01-27T09:25:52Z] [ERROR] User token is INVALID.
+[2026-01-27T09:25:52Z] [INFO] License data updated successfully.
+[2026-01-27T09:25:52Z] [INFO] Looking for a certificate file at licensing\dir\license-forces.lic'.
+[2026-01-27T09:25:52Z] [ERROR] Failed to checkout license certificate 'b2a4429d-854f-4cbf-85e8-1650613bd3a1'.
+[2026-01-27T09:25:52Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:25:52Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:25:52Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Failed to retrieve license machines.
+[2026-01-27T09:26:03Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:26:03Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:26:03Z] [ERROR] Failed to retrieve license machines.
+[2026-01-27T09:26:03Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:26:03Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:30:45Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:45Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:45Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:30:45Z] [INFO] Activating machine with name 'THOMAS_LAPTOP' and fingerprint 'fe3a23def11ba377561f14e0f5b17d53f9b998dbfd534b7f9acb07f9ea7175b5'...
+[2026-01-27T09:30:45Z] [INFO] Validating user token...
+[2026-01-27T09:30:45Z] [ERROR] User token is INVALID.
+[2026-01-27T09:30:45Z] [INFO] Validating user token...
+[2026-01-27T09:30:45Z] [ERROR] User token is INVALID.
+[2026-01-27T09:30:45Z] [ERROR] Cannot activate machine, authorization token is invalid.
+[2026-01-27T09:30:45Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:30:45Z] [ERROR] License certificate is INVALID.
+[2026-01-27T09:30:45Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:45Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:45Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:45Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:45Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:46Z] [ERROR] Failed to retrieve license machines.
+[2026-01-27T09:30:46Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:30:46Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:30:46Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:46Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:46Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:46Z] [ERROR] Failed to retrieve license machines.
+[2026-01-27T09:30:46Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:30:46Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:30:46Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:46Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:30:46Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:47Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:47Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:47Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:30:47Z] [INFO] Activating machine with name 'THOMAS_LAPTOP' and fingerprint 'fe3a23def11ba377561f14e0f5b17d53f9b998dbfd534b7f9acb07f9ea7175b5'...
+[2026-01-27T09:30:47Z] [INFO] Validating user token...
+[2026-01-27T09:30:47Z] [ERROR] User token is INVALID.
+[2026-01-27T09:30:47Z] [INFO] Validating user token...
+[2026-01-27T09:30:47Z] [ERROR] User token is INVALID.
+[2026-01-27T09:30:47Z] [ERROR] Cannot activate machine, authorization token is invalid.
+[2026-01-27T09:30:47Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:30:47Z] [ERROR] License certificate is INVALID.
+[2026-01-27T09:30:47Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:47Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:47Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:47Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:47Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:48Z] [ERROR] Failed to retrieve license machines.
+[2026-01-27T09:30:48Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:30:48Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:30:48Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:48Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:48Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:48Z] [ERROR] Failed to retrieve license machines.
+[2026-01-27T09:30:48Z] [ERROR] Error code: TOKEN_MISSING
+[2026-01-27T09:30:48Z] [ERROR] Error detail: You must be authenticated to complete the request
+[2026-01-27T09:30:48Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.
+[2026-01-27T09:30:48Z] [ERROR] Certificate file does not exist on path ''
+[2026-01-27T09:30:48Z] [ERROR] Could not find certificate file in default location 'licensing\dir\machine-main.lic'.

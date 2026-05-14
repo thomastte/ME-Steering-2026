@@ -1,0 +1,353 @@
+% Steering Torque Analysis - Sweep Method (No Direct Steer Measurement)
+% Sweeps through possible steer angles and calculates resulting forces
+clc; clear; close all; 
+data = load("B1965run19.mat");
+start1100 = 300;
+end1100 = 950;
+
+%% ========================================================================
+% SYSTEM PARAMETERS
+% ========================================================================
+
+% --- Steering System Limits ---
+steer_angle_max = 31;  % degrees (your maximum steering lock)
+steer_angle_min = 0;   % degrees
+num_points = 1 + end1100-start1100;      % resolution of sweep
+
+% Create steer angle sweep
+steer_angle = linspace(steer_angle_min, steer_angle_max, num_points);
+
+%% --- TTC Tire Data ---
+% Load your actual TTC data here
+ttc_slip_angle_raw = data.SA(start1100:end1100);
+ttc_Mz_raw = data.MZ(start1100:end1100);
+ttc_Fy_raw = data.FY(start1100:end1100);
+
+%% CLEAN TTC DATA - Remove duplicates and sort
+fprintf('Processing TTC data...\n');
+fprintf('  Raw data points: %d\n', length(ttc_slip_angle_raw));
+
+% Use unique() to remove duplicates by averaging
+[ttc_slip_angle_unique, ~, ic] = unique(ttc_slip_angle_raw);
+ttc_Mz = accumarray(ic, ttc_Mz_raw, [], @mean);
+ttc_Fy = accumarray(ic, ttc_Fy_raw, [], @mean);
+
+% Ensure data is sorted by slip angle (required for interp1)
+[ttc_slip_angle, sort_idx] = sort(ttc_slip_angle_unique);
+ttc_Mz = ttc_Mz(sort_idx);
+ttc_Fy = ttc_Fy(sort_idx);
+
+% CORRECT FOR SIGN CONVENTION
+% TTC data uses negative for normal/lateral forces
+% Convert to positive convention (positive = force pointing up/sideways)
+ttc_Fy = abs(ttc_Fy);  % Make lateral force positive
+ttc_Mz = abs(ttc_Mz);  % Make self-aligning torque positive magnitude
+
+fprintf('  Unique data points: %d\n', length(ttc_slip_angle));
+fprintf('  Slip angle range: %.2f to %.2f deg\n', min(ttc_slip_angle), max(ttc_slip_angle));
+fprintf('  Forces converted to positive convention\n');
+fprintf('  Data cleaned and sorted.\n\n');
+
+%% --- Vehicle/Suspension Geometry ---
+wheelbase = 2.8;           % meters
+front_weight_dist = 0.45;  % fraction on front axle
+vehicle_mass = 290;       % kg
+a = wheelbase * front_weight_dist;  % distance CG to front axle (m)
+
+caster_angle = 6.18;        % degrees
+kpi_angle = 7.98;           % degrees  
+mechanical_trail = 0.022;  % meters
+wheel_radius = 0.203;       % meters
+
+%% --- Steering Geometry ---
+tie_rod_arm = 84.55e-3;        % meters (moment arm from steering axis to tie rod ball joint)
+
+%% --- Operating Conditions to Sweep ---
+kmh = 10;
+vehicle_speed = kmh/3.6;        % m/s (example - can make this a vector too)
+
+%% ========================================================================
+% CALCULATE SLIP ANGLE AT EACH STEER ANGLE
+% ========================================================================
+
+% Normal force per front wheel
+Fz = (vehicle_mass * 9.81 * front_weight_dist) / 2;  % N
+
+% Initialize arrays
+slip_angle = zeros(size(steer_angle));
+Fy_tire = zeros(size(steer_angle));
+Mz_tire = zeros(size(steer_angle));
+yaw_rate = zeros(size(steer_angle));
+
+fprintf('Calculating slip angles for %d steer angles...\n', num_points);
+
+for i = 1:length(steer_angle)
+    delta = steer_angle(i);  % current steer angle
+    
+    % Initial guess: slip angle ≈ steer angle (small angle assumption)
+    alpha_guess = delta;
+    
+    % Iterative solution (simple fixed-point iteration)
+    for iter = 1:10
+        % Get lateral force from TTC data at current slip angle guess
+        Fy_front = interp1(ttc_slip_angle, ttc_Fy, alpha_guess, 'linear', 0);
+        
+        % Calculate yaw rate from lateral force (steady-state)
+        if vehicle_speed > 0.1  % avoid division by zero
+            % Simplified: lateral accel from front tire force
+            ay = (2 * Fy_front) / vehicle_mass;  % total lat accel (both front tires)
+            r = ay / vehicle_speed;  % yaw rate (rad/s)
+            
+            % Calculate velocity angle at front axle
+            beta_front_rad = (r * a) / vehicle_speed;
+            beta_front_deg = rad2deg(beta_front_rad);
+            
+            % New slip angle estimate
+            alpha_new = delta - beta_front_deg;
+        else
+            alpha_new = delta;  % static case
+        end
+        
+        % Check convergence
+        if abs(alpha_new - alpha_guess) < 0.01
+            break;
+        end
+        alpha_guess = alpha_new;
+    end
+    
+    % Store results
+    slip_angle(i) = alpha_guess;
+    yaw_rate(i) = r;
+    
+    % Get final forces from TTC data
+    Fy_tire(i) = interp1(ttc_slip_angle, ttc_Fy, slip_angle(i), 'linear', 0);
+    Mz_tire(i) = interp1(ttc_slip_angle, ttc_Mz, slip_angle(i), 'linear', 0);
+end
+
+fprintf('Slip angle calculation complete.\n\n');
+
+%% ========================================================================
+% CALCULATE ALL TORQUE COMPONENTS
+% ========================================================================
+
+%% 1. Self-Aligning Torque (from TTC data)
+T_self_aligning = Mz_tire;
+
+%% 2. Mechanical Trail Torque
+T_mechanical_trail = Fy_tire * mechanical_trail;
+
+%% 3. Gravity Torque (Caster + KPI Weight Jacking)
+r_caster = mechanical_trail * sin(deg2rad(caster_angle));
+r_kpi = 0;  % Removed scrub radius dependency
+
+% Lift calculation
+lift_caster = r_caster * (1 - cosd(steer_angle));
+lift_kpi = r_kpi * (1 - cosd(steer_angle));
+
+% Gravity torque (avoiding singularity at zero)
+T_gravity = Fz * (lift_caster + lift_kpi);
+idx_nonzero = steer_angle > 0.5;  % Only divide for angles > 0.5 deg
+T_gravity(idx_nonzero) = T_gravity(idx_nonzero) ./ sind(steer_angle(idx_nonzero));
+T_gravity(~idx_nonzero) = 0;
+
+%% 4. Friction (constant)
+T_friction = 5;  % Nm (measure from your system)
+
+%% 5. Total Torque per Wheel
+T_total_per_wheel = abs(T_self_aligning) + ...
+                    abs(T_mechanical_trail) + ...
+                    T_gravity + ...
+                    T_friction;
+
+%% 6. Convert to Rack Force
+% Torque at steering axis / tie rod arm = linear force at rack
+% Factor of 2 because both front wheels contribute
+F_rack = (2 * T_total_per_wheel) / tie_rod_arm;  % Newtons
+
+%% ========================================================================
+% RESULTS AND ANALYSIS
+% ========================================================================
+
+fprintf('=== Steering Torque Analysis Results ===\n\n');
+fprintf('Steer Angle Range: %.1f to %.1f degrees\n', steer_angle_min, steer_angle_max);
+fprintf('Vehicle Speed: %.1f m/s (%.1f km/h)\n\n', vehicle_speed, vehicle_speed*3.6);
+
+fprintf('Maximum Values:\n');
+fprintf('  Slip Angle:            %6.2f deg (at steer = %.1f deg)\n', ...
+        max(abs(slip_angle)), steer_angle(find(abs(slip_angle)==max(abs(slip_angle)),1)));
+fprintf('  Lateral Force:         %6.1f N\n', max(abs(Fy_tire)));
+fprintf('  Self-Aligning Torque:  %6.2f Nm\n', max(abs(T_self_aligning)));
+fprintf('  Mechanical Trail:      %6.2f Nm\n', max(abs(T_mechanical_trail)));
+fprintf('  Gravity (Caster/KPI):  %6.2f Nm\n', max(T_gravity));
+fprintf('  Friction:              %6.2f Nm\n', T_friction);
+fprintf('  -------------------------------\n');
+fprintf('  Total (per wheel):     %6.2f Nm\n', max(T_total_per_wheel));
+fprintf('  Rack Force:            %6.1f N\n\n', max(F_rack));
+
+%% Summary of force/torque at different locations
+fprintf('=== Force/Torque at Different Locations ===\n');
+fprintf('At Maximum Steering Angle:\n');
+[max_torque, idx_max] = max(T_total_per_wheel);
+fprintf('  Torque at steering axis (per wheel): %.2f Nm\n', max_torque);
+fprintf('  Rack force (linear):                  %.1f N\n', F_rack(idx_max));
+fprintf('  (occurs at steer angle = %.1f deg)\n\n', steer_angle(idx_max));
+
+%% Plotting
+figure('Position', [100 100 1400 900]);
+
+% Slip angle vs steer angle
+subplot(3,3,1);
+plot(steer_angle, slip_angle, 'LineWidth', 2);
+grid on;
+xlabel('Steer Angle (deg)');
+ylabel('Slip Angle (deg)');
+title('Slip Angle vs Steer Angle');
+
+% Tire forces
+subplot(3,3,2);
+plot(steer_angle, Fy_tire/1000, 'LineWidth', 2);
+grid on;
+xlabel('Steer Angle (deg)');
+ylabel('Lateral Force (kN)');
+title('Tire Lateral Force');
+
+% Self-aligning torque
+subplot(3,3,3);
+plot(steer_angle, T_self_aligning, 'LineWidth', 2);
+grid on;
+xlabel('Steer Angle (deg)');
+ylabel('Torque (Nm)');
+title('Self-Aligning Torque (TTC)');
+
+% Mechanical trail torque
+subplot(3,3,4);
+plot(steer_angle, T_mechanical_trail, 'LineWidth', 2);
+grid on;
+xlabel('Steer Angle (deg)');
+ylabel('Torque (Nm)');
+title('Mechanical Trail Torque');
+
+% Gravity torque
+subplot(3,3,5);
+plot(steer_angle, T_gravity, 'LineWidth', 2);
+grid on;
+xlabel('Steer Angle (deg)');
+ylabel('Torque (Nm)');
+title('Gravity Torque (Caster+KPI)');
+
+% Friction
+subplot(3,3,6);
+plot(steer_angle, T_friction * ones(size(steer_angle)), 'LineWidth', 2);
+grid on;
+xlabel('Steer Angle (deg)');
+ylabel('Torque (Nm)');
+title('Friction Torque (Constant)');
+
+% Component breakdown stacked area
+subplot(3,3,7);
+hold on;
+area(steer_angle, abs(T_self_aligning), 'FaceAlpha', 0.4, 'DisplayName', 'SAT');
+area(steer_angle, abs(T_self_aligning) + abs(T_mechanical_trail), ...
+     'FaceAlpha', 0.4, 'DisplayName', '+ Mech Trail');
+area(steer_angle, abs(T_self_aligning) + abs(T_mechanical_trail) + T_gravity, ...
+     'FaceAlpha', 0.4, 'DisplayName', '+ Gravity');
+plot(steer_angle, T_total_per_wheel, 'k-', 'LineWidth', 2.5, 'DisplayName', 'Total');
+grid on;
+xlabel('Steer Angle (deg)');
+ylabel('Torque (Nm)');
+title('Cumulative Torque Components');
+legend('Location', 'northeast');
+
+% Total torque (clean view)
+subplot(3,3,8);
+yyaxis left
+plot(steer_angle, T_total_per_wheel, 'b-', 'LineWidth', 2.5);
+ylabel('Torque at Steering Axis (Nm)');
+yyaxis right
+plot(steer_angle, F_rack, 'r-', 'LineWidth', 2);
+ylabel('Rack Force (N)');
+xlabel('Steer Angle (deg)');
+grid on;
+title('Total Steering Forces');
+legend('Torque (steering axis)', 'Force (rack)', 'Location', 'northeast');
+
+% Component percentages
+subplot(3,3,9);
+[~, idx_max] = max(T_total_per_wheel);
+percentages = [abs(T_self_aligning(idx_max)), ...
+               abs(T_mechanical_trail(idx_max)), ...
+               T_gravity(idx_max), ...
+               T_friction] / T_total_per_wheel(idx_max) * 100;
+labels = {'SAT', 'Mech Trail', 'Gravity', 'Friction'};
+pie(percentages, labels);
+title(sprintf('Component %% at Max Torque (%.1f deg)', steer_angle(idx_max)));
+
+%% Summary table
+fprintf('Torque Breakdown at Key Steer Angles:\n');
+fprintf('%-10s %-10s %-8s %-8s %-8s %-8s %-10s %-10s\n', ...
+        'Steer', 'Slip', 'SAT', 'MechTrl', 'Gravity', 'Friction', 'Total_Nm', 'Rack_N');
+fprintf('%-10s %-10s %-8s %-8s %-8s %-8s %-10s %-10s\n', ...
+        '(deg)', '(deg)', '(Nm)', '(Nm)', '(Nm)', '(Nm)', '(Nm)', '(N)');
+fprintf('%s\n', repmat('-', 1, 85));
+
+key_angles = [0, 5, 10, 15, 20, 25, 30, steer_angle_max];
+for angle = key_angles
+    [~, idx] = min(abs(steer_angle - angle));
+    fprintf('%10.1f %10.2f %8.2f %8.2f %8.2f %8.2f %10.2f %10.1f\n', ...
+            steer_angle(idx), slip_angle(idx), T_self_aligning(idx), ...
+            T_mechanical_trail(idx), T_gravity(idx), ...
+            T_friction, T_total_per_wheel(idx), F_rack(idx));
+end
+
+%% ========================================================================
+% AVERAGE RACK FORCE CALCULATION
+% ========================================================================
+
+fprintf('\n=== Average Rack Force Analysis ===\n\n');
+
+% Define angle range where "stuff is actually happening"
+min_meaningful_angle = 0;   % degrees (adjust as needed)
+max_meaningful_angle = 8;  % degrees (adjust as needed)
+
+% Find indices in the meaningful range
+idx_meaningful = (steer_angle >= min_meaningful_angle) & ...
+                 (steer_angle <= max_meaningful_angle);
+
+% Calculate averages in the meaningful range
+avg_rack_force = mean(F_rack(idx_meaningful));
+avg_torque = mean(T_total_per_wheel(idx_meaningful));
+
+% Also calculate RMS (gives more weight to peak values)
+rms_rack_force = sqrt(mean(F_rack(idx_meaningful).^2));
+rms_torque = sqrt(mean(T_total_per_wheel(idx_meaningful).^2));
+
+% Find peak values in this range
+max_rack_force = max(F_rack(idx_meaningful));
+max_torque = max(T_total_per_wheel(idx_meaningful));
+
+fprintf('Angle Range Analyzed: %.1f to %.1f degrees\n', ...
+        min_meaningful_angle, max_meaningful_angle);
+fprintf('Number of points: %d\n\n', sum(idx_meaningful));
+
+fprintf('RACK FORCE:\n');
+fprintf('  Average:  %8.1f N\n', avg_rack_force);
+fprintf('  RMS:      %8.1f N\n', rms_rack_force);
+fprintf('  Maximum:  %8.1f N\n\n', max_rack_force);
+
+fprintf('TORQUE AT STEERING AXIS:\n');
+fprintf('  Average:  %8.2f Nm\n', avg_torque);
+fprintf('  RMS:      %8.2f Nm\n', rms_torque);
+fprintf('  Maximum:  %8.2f Nm\n\n', max_torque);
+
+% Show component breakdown of average
+avg_SAT = mean(abs(T_self_aligning(idx_meaningful)));
+avg_mech = mean(abs(T_mechanical_trail(idx_meaningful)));
+avg_grav = mean(T_gravity(idx_meaningful));
+
+fprintf('AVERAGE COMPONENT BREAKDOWN:\n');
+fprintf('  Self-Aligning:    %6.2f Nm  (%5.1f%%)\n', avg_SAT, 100*avg_SAT/avg_torque);
+fprintf('  Mechanical Trail: %6.2f Nm  (%5.1f%%)\n', avg_mech, 100*avg_mech/avg_torque);
+fprintf('  Gravity:          %6.2f Nm  (%5.1f%%)\n', avg_grav, 100*avg_grav/avg_torque);
+fprintf('  Friction:         %6.2f Nm  (%5.1f%%)\n', T_friction, 100*T_friction/avg_torque);
+fprintf('  --------------------------------\n');
+fprintf('  Total:            %6.2f Nm\n\n', avg_torque);

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE OptimumGProject PUBLIC "" ""[]>
+<ProjectInformation Version="1.0" Date="134139796801360427">
+   <ProjectTree>
+      <TreeName>Project</TreeName>
+      <BaseFilePath>C:\Users\thoma\Documents\ME-Steering-2026\Optimum\Lap\AR26</BaseFilePath>
+      <AdvTree>
+         <Node Expanded="true" Name="" TagString="ProjectFramework.ProjectTreeManagementItem" DataKeyString="ProjectFramework.ProjectTreeManagementItem" Text="AR26">
+            <image name="Image">iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwAAADsABataJCQAAABp0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuMTAw9HKhAAACBklEQVQ4T62SS4vTUBiGg3vdiC5UmL2zFPQPiBsRmW1xkX8guBdFuxCZSgcRpDtFwZUzLgURXBQZHCiUaaWpbW6nuSenSZpLm+Ar51Sn0NSN+MGzycn7cF6+Iwj/awghtSRJaJKkNE1TmmXZCWEY0sFg8E2SpHPruZMxTVOcz+dYLBa/KVAUBcqyRFGUUBQFhmF0+/3+ZolhGGKW58jzHEy0ki1FhmFAkiQcHR11O51OVTKZTMQkTcHIsgxZlnM+9qe498HG3QML340YYRhiPB6L6/mVIFlKJDPC0082tpsWhPsOhAc2rrxQuNwyrargTwXGMYlxoa6hreS42gohPPIhPPFxsakgjmPouv4XQZaBxiku7+o4U/cQ5j9xqUlx+lmAUw0Xd/Z1TKdTqKpaFfAKSYrdzw7O1m3cehtB8ktcez3F9iuKrZaOLgkQBAHbSFVACBFnsxmuv9Sx1Qjw8EuKYVDieSfFzfcWDnoOv77n+5BluSpgvaIowo2WhvMNFzv7IR5/jbB36KA9csHO2AZc1928BdaLUorDHy5uv1Gw807FXnsCzfbAvjP8IIDjOBiNRlUB6+X7Pv+JXdPzPLiuB8dxeYhhWRZM08RwOKwKxrIssoDLg6uQbds8aJgmf43LF7lBIElSjZAJJYRQXdc5mqZRRVWpoigcWZY5vV6/tp7/5/kFMo4xgjMnDZwAAAAASUVORK5C</image>
+            <Custom>&lt;ProjectTreeManagementItem&gt;&lt;FolderName&gt;AR26&lt;/FolderName&gt;&lt;ManagementID&gt;PRO&lt;/ManagementID&gt;&lt;BlockFolderChild&gt;False&lt;/BlockFolderChild&gt;&lt;BlockFileChild&gt;True&lt;/BlockFileChild&gt;&lt;BlockAllMod&gt;False&lt;/BlockAllMod&gt;&lt;VehicleId&gt;00000000-0000-0000-0000-000000000000&lt;/VehicleId&gt;&lt;/ProjectTreeManagementItem&gt;</Custom>
+         </Node>
+      </AdvTree>
+   </ProjectTree>
+</ProjectInformation>
