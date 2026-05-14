@@ -9,7 +9,7 @@ avgB = mean(b)
 stdB = std(b)
 
 
-a = round([a, normrnd(avgA, stdA, [1, 5])])
+a = round([a, normrnd(avgA, stdA, [1, 5])]);
 newA = mean(a)
-b = round([b, normrnd(avgB, stdB, [1, 5])])
+b = round([b, normrnd(avgB, stdB, [1, 5])]);
 newB = mean(b)

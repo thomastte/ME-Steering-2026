@@ -23,16 +23,16 @@ AR26.FrontalArea = 0.8; % Front view area of the car - m^2
 %% Steering
 AR26.SteeringWheelBreakPointsOutside = [0, 16.7, 30.25, 44.2, 61.4, 78.35, 86];
 AR26.SteeringWheelBreakPointsInside = flip(-AR26.SteeringWheelBreakPointsOutside);
-AR26.SteeringWheelBreakPoints = [AR26.SteeringWheelBreakPointsInside, AR26.SteeringWheelBreakPointsOutside];
-AR26.WheelBreakPointsOutside = [0, 5, 10, 15, 20, 25, 30];
-AR26.WheelBreakPointsInside = flip(AR26.WheelBreakPointsOutside);
-AR26.WheelBreakPoints = [AR26.WheelBreakPointsInside,AR26.WheelBreakPointsOutside];
+AR26.SteeringWheelBreakPoints = deg2rad([AR26.SteeringWheelBreakPointsInside, AR26.SteeringWheelBreakPointsOutside]);
+AR26.WheelBreakPointsOutside = [5, 10, 15, 20, 25, 30];
+AR26.WheelBreakPointsInside = flip(-AR26.WheelBreakPointsOutside);
+AR26.WheelBreakPoints = deg2rad([AR26.WheelBreakPointsInside,0,AR26.WheelBreakPointsOutside]);
 AR26.RackWidth = 424.42e-3; % Steering Rack width - m
 AR26.SteeringArmLength = 78.68e-3; % Length from upright tierod point to steering axis - m
 AR26.TieRodLength = 339.4e-3; % Tie Rod length - m
 AR26.RackAxisLength = 79.52e-3; % Long. length from steering rack to steering axis point - m
 AR26.PinionRadius = 20e-3; % Pinion radius - m
-
+AR26.PinionRadiusTable = AR26.PinionRadius .* ones(1,13);
 
 %% Brakes
 AR26.FrntBrkBias = 0.75; % Front brake bias - ratio

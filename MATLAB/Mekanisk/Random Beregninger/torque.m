@@ -6,14 +6,27 @@ kW = 80;
 
 T = min(31.6*4, (kW*9550)./RPM);
 T2 = min(31.6*4, (kW*9550)./RPM2);
-figure
-subplot(2,1,1)
-plot(RPM,T)
-xlim([0 20e3])
-subplot(2,1,2)
-plot(RPM2,T2)
+f = figure(Name="Motor Torque vs. RPM");
+%subplot(2,1,1)
+%plot(RPM,T,LineWidth=3)
+%xlim([0 20e3])
+% Plot formatting
+%title('Motor Torque vs. RPM (13k RPM)');
+%xlabel('RPM');
+%ylabel('Torque (Nm)');
+%grid on;
+%subplot(2,1,2)
+plot(RPM2,T2,LineWidth=3)
+% Plot formatting
+title('Motor Torque vs. RPM(20k RPM)');
+xlabel('RPM');
+ylabel('Torque (Nm)');
+grid on;
+fontsize(f,'scale',1.5)
+exportgraphics(gcf,'RPM.eps')
 
-%Steering Angle
+%% Steering Angle
+clc; clear; close all;
 data = readtable("yawrate.txt");
 %data = table2struct(data);
 distance = readtable("distance.txt");
