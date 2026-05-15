@@ -36,8 +36,19 @@ totalGermanyTurns = round(germanyLaps * germanyTurns)
 
 %%
 clc; close all; 
-x = germany.xposition; 
-y = germany.yposition; 
+xGer = germany.xposition; 
+yGer = germany.yposition; 
 
 figure 
-plot(x,y)
+plot(xGer,yGer)
+hold on
+plot(xGer(1),yGer(1),'ks','MarkerSize', 14, 'MarkerFaceColor','r','DisplayName',"Start")
+legend("","Start")
+
+xAus = austria.xposition; 
+yAus = austria.yposition; 
+figure 
+plot(xAus, yAus)
+hold on
+plot(xAus(1),yAus(1),'ks','MarkerSize', 14, 'MarkerFaceColor','r','DisplayName',"Start")
+legend("","Start")

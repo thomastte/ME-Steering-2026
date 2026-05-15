@@ -44,13 +44,13 @@ m       = 293;          % kg   total mass
 L       = 1.540;        % m    wheelbase
 a_cg    = 0.853;        % m    CG to front axle
 h_cg    = 0.241;        % m    CG height
-t_f     = 1.110;        % m    front track (FULL width)
+t_f     = 1.410;        % m    front track (FULL width)
 g_SI    = 9.81;         % m/s^2
 b_cg    = L - a_cg;     % m    CG to rear axle
 
 %% -- Steering geometry -------------------------------------------------------
 e       = 15e-3;        % m    mechanical trail          estimate
-L_arm   = 78.68e-3;     % m    steering arm length (LTS.m)
+L_arm   = 84.55e-3;     % m    steering arm length (LTS.m)
 r_pin   = 20e-3;        % m    pinion radius
 
 %% -- Tyre (.tir file coefficients) -------------------------------------------
@@ -161,7 +161,7 @@ for k = 1:N_pts
     ay_abs = abs(ay);
 
     % Load transfer magnitude based on |ay|
-    dFz = m * ay_abs * h_cg * (b_cg / L) / (2 * t_f);
+    dFz = m * ay_abs * h_cg * (b_cg / L) / (t_f);
 
     % Assign loads to physical wheels based on sign of ay
     if ay >= 0
@@ -224,7 +224,7 @@ end
 %% DIAGNOSTIC BRUSH SWEEP AT +AY_DIAG_G
 %% ══════════════════════════════════════════════════════════════════════════════
 ay_d    = abs(AY_DIAG_G) * g_SI;
-dFz_d   = m * ay_d * h_cg * (b_cg / L) / (2 * t_f);
+dFz_d   = m * ay_d * h_cg * (b_cg / L) / (t_f);
 Fz_Rd   = Fz_static + dFz_d;   % right = outer at positive ay
 Fz_Ld   = max(Fz_static - dFz_d, 0);
 
