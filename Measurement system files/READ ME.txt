@@ -1,0 +1,3 @@
+In this folder you will find the measurement data from all the tests done with the potentiometer, axial load sensor and torque sensor. 
+
+Each file includes an Arduino IDE file which was used for logging of the sensor output, and the data obtained for each test is found in their belonging file With MATLAB files which was used for analysis of each test.

@@ -26,7 +26,7 @@ INPUT_MODE = 'data';    % 'sweep' or 'data'
 % then 3 column-header rows, then numeric data.
 % Columns used: elapsedTime (col 2) and lateralAcceleration (col 4) in G.
 % Positive ay = right turn, negative = left turn (OL convention).
-DATA_FILE  = ['ar26germany.csv'];
+DATA_FILE  = ['ar26austria.csv'];
 
 % ── If 'sweep': symmetric range ───────────────────────────────────────────────
 AY_MAX_G   = 2.5;       % g   (sweep runs from -AY_MAX_G to +AY_MAX_G)
@@ -282,45 +282,47 @@ end
 %% ══════════════════════════════════════════════════════════════════════════════
 %% FIGURE 1 — MAIN: T_SW, F_RACK AND PER-WHEEL KINGPIN MOMENT VS AY
 %% ══════════════════════════════════════════════════════════════════════════════
-figure('Name', 'AR26 Steering Moment vs Lateral Acceleration', ...
+figure('Name', 'AR26 Pinion Torque vs Lateral Acceleration', ...
        'Position', [80 80 1050 460]);
 
 subplot(1,2,1);
 yyaxis left
-plot(ay_g_vec, T_SW_vec, 'b-', 'LineWidth', 2);
-ylabel('Steering wheel torque T_{SW} (Nm)');
+plot(ay_g_vec, T_SW_vec, 'LineWidth', 4);
+ylabel('Pinion torque T_{SW} (Nm)', 'FontSize', 15);
 ylim([min(T_SW_vec)*1.15 - 0.01, max(T_SW_vec)*1.15 + 0.01]);
 yyaxis right
-plot(ay_g_vec, F_rack_vec, 'r-', 'LineWidth', 1.5);
-ylabel('Rack force F_{rack} (N)');
-xlabel(x_label);
-title('T_{SW} and F_{rack}  (signed — follows rotation direction)');
+plot(ay_g_vec, F_rack_vec, 'LineWidth', 1.5);
+ylabel('Rack force F_{rack} (N)', 'FontSize', 15);
+xlabel('Lateral Acceleration (g)', 'FontSize', 15);
+title('T_{P} and F_{rack}', 'FontSize', 20);
 yline(0, 'k-', 'LineWidth', 0.5, 'HandleVisibility', 'off');
 if strcmp(INPUT_MODE, 'sweep')
     xline(0, 'k:', 'LineWidth', 1, 'HandleVisibility', 'off');
 end
 grid on;
-legend('T_{SW}', 'F_{rack}', 'Location', 'north');
+legend('T_{SW}', 'F_{rack}', 'Location', 'north', 'FontSize', 12);
 
 subplot(1,2,2);
-plot(ay_g_vec, M_kp_R_vec, 'b-', 'LineWidth', 2, ...
-    'DisplayName', 'Right wheel M_{kp}'); hold on;
-plot(ay_g_vec, M_kp_L_vec, 'r-', 'LineWidth', 2, ...
-    'DisplayName', 'Left wheel M_{kp}');
-plot(ay_g_vec, M_kp_R_vec + M_kp_L_vec, 'k--', 'LineWidth', 1.5, ...
-    'DisplayName', 'Total M_{kp} (both)');
+plot(ay_g_vec, M_kp_R_vec, 'LineWidth', 2, ...
+    'DisplayName', 'Right wheel M_{sa}'); hold on;
+plot(ay_g_vec, M_kp_L_vec, 'LineWidth', 2, ...
+    'DisplayName', 'Left wheel M_{sa}');
+plot(ay_g_vec, M_kp_R_vec + M_kp_L_vec, 'Color',[0.466, 0.674, 0.188], 'LineWidth', 1.5, ...
+    'DisplayName', 'Total M_{sa} (both)');
+xlim([-3 3])
 if strcmp(INPUT_MODE, 'sweep')
     xline(0, 'k:', 'LineWidth', 1, 'HandleVisibility', 'off');
 end
-xlabel(x_label);
-ylabel('Kingpin moment M_{kp} (Nm)');
-title({'Kingpin Moment per Physical Wheel'; ...
-       'Right outer at +a_y  |  Left outer at -a_y'});
+xlabel('Lateral Acceleration (g)', 'FontSize', 15);
+ylabel('Steering axis moment M_{sa} (Nm)', 'FontSize', 15);
+title({'Steering axis Moment per Wheel'}, 'FontSize', 20);
 legend('Location', 'north');
 grid on;
+set(gcf, 'Units', 'centimeters', 'Position', [30, 20, 35, 11]); % Screen size
+set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [30, 20, 35, 21]); % Export size
 
-sgtitle('AR26 — Steering Moment vs Lateral Acceleration', ...
-    'FontSize', 12, 'FontWeight', 'bold');
+sgtitle('Pinion Torque vs Lateral Acceleration', ...
+    'FontSize', 25, 'FontWeight', 'bold');
 
 %% ══════════════════════════════════════════════════════════════════════════════
 %% FIGURE 2 — DATA MODE: time history + histogram
@@ -437,7 +439,7 @@ if strcmp(INPUT_MODE, 'data')
     xline(0, 'k:', 'LineWidth', 0.8);
     grid on;
 
-    sgtitle('AR26 — FSG Endurance 2012', 'FontSize', 11, 'FontWeight', 'bold');
+    sgtitle('FSG Endurance 2012', 'FontSize', 11, 'FontWeight', 'bold');
 
     % ── Figure 2d: Track map coloured by |T_SW| (green=low, red=high) ────────
     if have_pos
@@ -453,7 +455,7 @@ if strcmp(INPUT_MODE, 'data')
         % CData mapped to each vertex. EdgeColor = 'interp' interpolates
         % colour along each edge between consecutive vertices.
         h = patch([x_pos, NaN], [y_pos, NaN], [c_data, NaN], ...
-            'EdgeColor', 'interp', 'FaceColor', 'none', 'LineWidth', 2.5);
+            'EdgeColor', 'interp', 'FaceColor', 'none', 'LineWidth', 3);
 
         % Diverging blue -> green -> red colormap, centred on zero
         % blue = max negative (hard left), green = zero (straight), red = max positive (hard right)
@@ -476,16 +478,17 @@ end
         clim([-clim_abs, clim_abs]);
 
         cb = colorbar;
-        cb.Label.String = '|T_{SW}| (Nm)';
-        cb.Label.FontSize = 10;
+        cb.Label.String = '|T_{P}| (Nm)';
+        cb.Label.FontSize = 15;
+        cb.Label.FontName = 'Helvetica';
 
         axis equal;
         grid on;
-        xlabel('x position (m)');
-        ylabel('y position (m)');
-        title({'Track Map Coloured by Steering Torque Magnitude'; ...
-               sprintf('Peak |T_{SW}| = %.2f Nm  |  Mean = %+.3f Nm  |  RMS = %.2f Nm', ...
-                       T_SW_absmax, T_SW_mean, T_SW_rms)});
+        xlabel('x position (m)', 'FontSize', 15, 'FontName','Helvetica');
+        ylabel('y position (m)', 'FontSize', 15, 'FontName','Helvetica');
+        %title({'Track Map Coloured by Steering Torque Magnitude'; ...
+        %       sprintf('Peak |T_{SW}| = %.2f Nm  |  Mean = %+.3f Nm  |  RMS = %.2f Nm', ...
+        %               T_SW_absmax, T_SW_mean, T_SW_rms)});
 
         % Mark start/finish and peak torque location
         hold on;
@@ -495,72 +498,185 @@ end
         plot(x_pos(i_peak), y_pos(i_peak), 'kp', 'MarkerSize', 14, ...
             'MarkerFaceColor', [0.85 0.05 0.05], ...
             'DisplayName', sprintf('Peak %.1f Nm', c_data(i_peak)));
-        legend('Location', 'best', 'FontSize', 9);
+        legend('Location', 'northeast', 'FontSize', 12, 'FontName','Helvetica');
         hold off;
 
-        sgtitle('AR26 — FSG Endurance 2012', 'FontSize', 11, 'FontWeight', 'bold');
+        sgtitle('FSA Endurance 2012', 'FontSize', 25, 'FontWeight', 'bold', 'FontName','Helvetica');
     end
 
 end
+set(gcf, 'Units', 'centimeters', 'Position', [30, 20, 25, 25]); % Screen size
+set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
+%saveas(gcf,'trackmapAus','svg');
 
 %% ══════════════════════════════════════════════════════════════════════════════
 %% FIGURE 3 — DIAGNOSTIC BRUSH SWEEP AT +AY_DIAG_G
 %% ══════════════════════════════════════════════════════════════════════════════
 figure('Name', sprintf('Brush Sweep @ +%.1fg  (right=outer)', AY_DIAG_G), ...
-       'Position', [1100 80 820 560]);
+      'Position', [0 80 2560 560]);
 
-subplot(2,2,1);
-plot(alphas, Fy_Rd, 'b-', 'LineWidth',2,   'DisplayName','Right (outer)'); hold on;
-plot(alphas, Fy_Ld, 'r-', 'LineWidth',1.5, 'DisplayName','Left (inner)');
-xline(alphas(idx_Rd),'b--','LineWidth',1,'HandleVisibility','off');
-xline(alphas(idx_Ld),'r--','LineWidth',1,'HandleVisibility','off');
-plot(alphas(idx_Rd),Fy_Rd(idx_Rd),'bo','MarkerFaceColor','b','MarkerSize',7,...
+subplot(1,3,1);
+%figure
+plot(alphas, Fy_Rd, 'LineWidth',3,   'DisplayName','Right (outer)'); hold on;
+plot(alphas, Fy_Ld, 'LineWidth',2.5, 'DisplayName','Left (inner)');
+xline(alphas(idx_Rd),'Color',[0, 0.4470, 0.7410],'LineStyle','--','LineWidth',1.5,'HandleVisibility','off');
+xline(alphas(idx_Ld),'Color',[0.8500, 0.3250, 0.0980],'LineStyle','--','LineWidth',1.5,'HandleVisibility','off');
+plot(alphas(idx_Rd),Fy_Rd(idx_Rd),'bo','MarkerFaceColor',[0, 0.4470, 0.7410],'MarkerSize',10,...
     'DisplayName',sprintf('Op. right (%.1f deg)',alphas(idx_Rd)));
-plot(alphas(idx_Ld),Fy_Ld(idx_Ld),'ro','MarkerFaceColor','r','MarkerSize',6,...
+plot(alphas(idx_Ld),Fy_Ld(idx_Ld),'ro','MarkerFaceColor',[0.8500, 0.3250, 0.0980],'MarkerSize',10,...
     'DisplayName',sprintf('Op. left  (%.1f deg)',alphas(idx_Ld)));
-grid on; legend('Location','southeast','FontSize',8);
-xlabel('\alpha (deg)'); ylabel('F_y (N)');
-title(sprintf('Lateral Force  [a_y = +%.1fg]', AY_DIAG_G));
+grid on; legend('Location','southeast','FontSize',12);
+xlabel('\alpha (deg)', 'FontSize',15); ylabel('F_y (N)', 'FontSize',15);
+title('Lateral Force', 'FontSize', 20);
+%set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 10]); % Screen size
+%set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
 
-subplot(2,2,2);
+subplot(1,3,2);
+%figure
 yyaxis left
-plot(alphas,Mz_Rd,'Color',[0.2 0.4 0.8],'LineWidth',2,  'DisplayName','M_z right'); hold on;
-plot(alphas,Mz_Ld,'Color',[0.8 0.2 0.2],'LineWidth',1.5,'DisplayName','M_z left');
-ylabel('M_z (Nm)');
+plot(alphas,Mz_Rd,'Color',[0 0.447 0.741],'LineWidth',3,  'DisplayName','M_z right'); hold on;
+plot(alphas,Mz_Ld,'Color',[0.85 0.325 0.098],'LineWidth',2.5,'DisplayName','M_z left');
+ylabel('M_z (Nm)', 'FontSize',15);
 yyaxis right
-plot(alphas,T_Rd,'b:','LineWidth',1.5,'DisplayName','t right (mm)');
-plot(alphas,T_Ld,'r:','LineWidth',1.2,'DisplayName','t left  (mm)');
-ylabel('Pneumatic trail t (mm)');
-grid on; legend('Location','northeast','FontSize',8);
-xlabel('\alpha (deg)');
-title('Aligning Moment and Pneumatic Trail');
+ax = gca; 
+ax.YAxis(2).Color = [0.929, 0.694, 0.125];
+plot(alphas,T_Rd,'Color',[0.929, 0.694, 0.125],'LineWidth',1.5,'DisplayName','t right (mm)');
+plot(alphas,T_Ld,'Color',[0.466, 0.674, 0.188],'LineWidth',1.2,'DisplayName','t left  (mm)');
+ylabel('Pneumatic trail t (mm)','Color',[0.929, 0.694, 0.125], 'FontSize',15);
+grid on; legend('Location','northeast','FontSize',12);
+xlabel('\alpha (deg)', 'FontSize',15);
+title('Aligning Moment and Pneumatic Trail', 'FontSize',20);
+%set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 10]); % Screen size
+%set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
 
-subplot(2,2,3);
-plot(alphas,Kp_Rd,'b-','LineWidth',2,  'DisplayName','M_{kp} right'); hold on;
-plot(alphas,Kp_Ld,'r-','LineWidth',1.5,'DisplayName','M_{kp} left');
-xline(alphas(idx_Rd),'b--','LineWidth',1,'HandleVisibility','off');
-xline(alphas(idx_Ld),'r--','LineWidth',1,'HandleVisibility','off');
-plot(alphas(idx_Rd),Kp_Rd(idx_Rd),'bo','MarkerFaceColor','b','MarkerSize',8,...
+subplot(1,3,3);
+%figure
+plot(alphas,Kp_Rd,'Color',[0 0.447 0.741],'LineWidth',3,  'DisplayName','M_{kp} right'); hold on;
+plot(alphas,Kp_Ld,'Color',[0.85 0.325 0.098],'LineWidth',2.5,'DisplayName','M_{kp} left');
+xline(alphas(idx_Rd),'Color',[0 0.447 0.741],'LineWidth',1.5,'HandleVisibility','off');
+xline(alphas(idx_Ld),'Color',[0.85 0.325 0.098],'LineWidth',1.5,'HandleVisibility','off');
+plot(alphas(idx_Rd),Kp_Rd(idx_Rd),'bo','MarkerFaceColor',[0 0.447 0.741],'MarkerSize',10,...
     'DisplayName',sprintf('Right: %.1f Nm',Kp_Rd(idx_Rd)));
-plot(alphas(idx_Ld),Kp_Ld(idx_Ld),'ro','MarkerFaceColor','r','MarkerSize',7,...
+plot(alphas(idx_Ld),Kp_Ld(idx_Ld),'ro','MarkerFaceColor',[0.85 0.325 0.098],'MarkerSize',10,...
     'DisplayName',sprintf('Left:  %.1f Nm',Kp_Ld(idx_Ld)));
-grid on; legend('Location','northeast','FontSize',8);
-xlabel('\alpha (deg)'); ylabel('M_{kp} = F_y(e+t)  (Nm)');
-title(sprintf('Kingpin Moment  [e = %.0f mm]', e*1000));
+grid on; legend('Location','southeast','FontSize',12);
+xlabel('\alpha (deg)', 'FontSize',15); ylabel('M_{sa}  (Nm)', 'FontSize',15);
+title('Steering Axis Moment','FontSize', 20);
+set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 45, 10]); % Screen size
+set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 45, 10]); % Export size
 
-subplot(2,2,4);
-T_SW_d   = (Kp_Rd(idx_Rd) + Kp_Ld(idx_Ld)) / L_arm * r_pin;
-F_rack_d = (Kp_Rd(idx_Rd) + Kp_Ld(idx_Ld)) / L_arm;
-cats = {'M_{kp} right','M_{kp} left','F_{rack}/10','T_{SW}'};
-vals = [Kp_Rd(idx_Rd), Kp_Ld(idx_Ld), F_rack_d/10, T_SW_d];
-bar(vals,'FaceColor',[0.25 0.35 0.6]);
-set(gca,'XTickLabel',cats,'XTickLabelRotation',20,'FontSize',9);
-ylabel('Nm  (or N/10 for F_{rack})');
-title(sprintf('Summary  T_{SW}=%.2f Nm  F_{rack}=%.0f N', T_SW_d, F_rack_d));
+% subplot(2,2,4);
+% T_SW_d   = (Kp_Rd(idx_Rd) + Kp_Ld(idx_Ld)) / L_arm * r_pin;
+% F_rack_d = (Kp_Rd(idx_Rd) + Kp_Ld(idx_Ld)) / L_arm;
+% cats = {'M_{kp} right','M_{kp} left','F_{rack}/10','T_{SW}'};
+% vals = [Kp_Rd(idx_Rd), Kp_Ld(idx_Ld), F_rack_d/10, T_SW_d];
+% bar(vals,'FaceColor',[0.25 0.35 0.6]);
+% set(gca,'XTickLabel',cats,'XTickLabelRotation',20,'FontSize',9);
+% ylabel('Nm  (or N/10 for F_{rack})');
+% title(sprintf('Summary  T_{SW}=%.2f Nm  F_{rack}=%.0f N', T_SW_d, F_rack_d));
+% grid on;
+
+sgtitle('Brush Sweep (right=outer, left=inner)', ...
+    'FontSize', 25, 'FontWeight', 'bold');
+
+%% ══════════════════════════════════════════════════════════════════════════════
+%% FIGURE 3 — BRUSH SWEEP + MOMENT PATH SUMMARY AT +AY_DIAG_G
+%% ══════════════════════════════════════════════════════════════════════════════
+
+c_blue   = [0,      0.4470, 0.7410];
+c_orange = [0.8500, 0.3250, 0.0980];
+c_green  = [0.466,  0.674,  0.188 ];
+c_yellow = [0.929,  0.694,  0.125 ];
+
+% Derived summary quantities at operating point
+T_SW_d    = (Kp_Rd(idx_Rd) + Kp_Ld(idx_Ld)) / L_arm * r_pin;
+F_rack_d  = (Kp_Rd(idx_Rd) + Kp_Ld(idx_Ld)) / L_arm;
+
+figure('Name', sprintf('Brush Sweep + Summary @ %.1fg', AY_DIAG_G), ...
+    'Position', [80 80 1400 440]);
+
+% ── Panel 1: Lateral Force ────────────────────────────────────────────────────
+subplot(1,3,1);
+plot(alphas, Fy_Rd, 'Color', c_blue,   'LineWidth', 2.5, ...
+    'DisplayName', 'Outer wheel'); hold on;
+plot(alphas, Fy_Ld, 'Color', c_orange, 'LineWidth', 2.5, ...
+    'DisplayName', 'Inner wheel');
+xline(alphas(idx_Rd), 'Color', c_blue,   'LineStyle', '--', 'LineWidth', 1.5, ...
+    'HandleVisibility', 'off');
+xline(alphas(idx_Ld), 'Color', c_orange, 'LineStyle', '--', 'LineWidth', 1.5, ...
+    'HandleVisibility', 'off');
+plot(alphas(idx_Rd), Fy_Rd(idx_Rd), 'o', 'Color', c_blue, ...
+    'MarkerFaceColor', c_blue,   'MarkerSize', 9, ...
+    'DisplayName', sprintf('Outer: \\alpha = %.1f°', alphas(idx_Rd)));
+plot(alphas(idx_Ld), Fy_Ld(idx_Ld), 'o', 'Color', c_orange, ...
+    'MarkerFaceColor', c_orange, 'MarkerSize', 9, ...
+    'DisplayName', sprintf('Inner: \\alpha = %.1f°', alphas(idx_Ld)));
 grid on;
+xlabel('\alpha (deg)', 'FontSize', 15);
+ylabel('F_y (N)',      'FontSize', 15);
+title('Lateral Force', 'FontSize', 20);
+legend('Location', 'southeast', 'FontSize', 12);
 
-sgtitle(sprintf('Brush Sweep @ +%.1fg  (right=outer, left=inner)', AY_DIAG_G), ...
-    'FontSize', 11, 'FontWeight', 'bold');
+% ── Panel 2: Kingpin Moment ───────────────────────────────────────────────────
+subplot(1,3,2);
+plot(alphas, Kp_Rd, 'Color', c_blue,   'LineWidth', 2.5, ...
+    'DisplayName', 'Outer wheel'); hold on;
+plot(alphas, Kp_Ld, 'Color', c_orange, 'LineWidth', 2.5, ...
+    'DisplayName', 'Inner wheel');
+xline(alphas(idx_Rd), 'Color', c_blue,   'LineStyle', '--', 'LineWidth', 1.5, ...
+    'HandleVisibility', 'off');
+xline(alphas(idx_Ld), 'Color', c_orange, 'LineStyle', '--', 'LineWidth', 1.5, ...
+    'HandleVisibility', 'off');
+plot(alphas(idx_Rd), Kp_Rd(idx_Rd), 'o', 'Color', c_blue, ...
+    'MarkerFaceColor', c_blue,   'MarkerSize', 9, ...
+    'DisplayName', sprintf('Outer: %.1f Nm', Kp_Rd(idx_Rd)));
+plot(alphas(idx_Ld), Kp_Ld(idx_Ld), 'o', 'Color', c_orange, ...
+    'MarkerFaceColor', c_orange, 'MarkerSize', 9, ...
+    'DisplayName', sprintf('Inner: %.1f Nm', Kp_Ld(idx_Ld)));
+grid on;
+xlabel('\alpha (deg)', 'FontSize', 15);
+ylabel('M_{kp} (Nm)', 'FontSize', 15);
+title('Kingpin Moment', 'FontSize', 20);
+legend('Location', 'southeast', 'FontSize', 12);
+
+% ── Panel 3: Moment path summary bar chart ────────────────────────────────────
+subplot(1,3,3);
+
+% Values to display — all in Nm except F_rack shown as Nm-equivalent (F*r_pin)
+bar_labels = {'M_{kp} outer', 'M_{kp} inner', 'F_{rack} \times r_{pin}'};
+bar_values = [Kp_Rd(idx_Rd), Kp_Ld(idx_Ld), T_SW_d];
+bar_colors = [c_blue; c_orange; c_green];
+
+b = bar(bar_values, 'FaceColor', 'flat');
+b.CData = bar_colors;
+b.EdgeColor = 'none';
+
+% Annotate each bar with its value
+for i = 1:3
+    text(i, bar_values(i) + 0.3, sprintf('%.1f Nm', bar_values(i)), ...
+        'HorizontalAlignment', 'center', 'FontSize', 12, 'FontWeight', 'bold');
+end
+
+% Add F_rack as secondary annotation on the T_SW bar
+text(3, bar_values(3)/2, sprintf('F_{rack} = %.0f N', F_rack_d), ...
+    'HorizontalAlignment', 'center', 'FontSize', 11, 'Color', 'w', 'FontWeight', 'bold');
+
+set(gca, 'XTickLabel', bar_labels, 'FontSize', 12, 'XTickLabelRotation', 10);
+ylabel('Moment (Nm)', 'FontSize', 15);
+title('Moment Path', 'FontSize', 20);
+ylim([0, max(bar_values) * 1.25]);
+grid on; box off;
+
+sgtitle(sprintf('Brush Model — a_y = %.1f g   |   F_{rack} = %.0f N   |   T_{pinion} = %.2f Nm', ...
+    AY_DIAG_G, F_rack_d, T_SW_d), 'FontSize', 25, 'FontWeight', 'bold');
+
+exportgraphics(gcf, 'brush_sweep_1p5g.pdf', 'ContentType', 'vector');
+
+
+F_tierod_outer = Kp_Rd(idx_Rd) / L_arm;
+F_tierod_inner = Kp_Ld(idx_Ld) / L_arm;
+F_rack_d       = F_tierod_outer + F_tierod_inner;
+%%
 
 %% ══════════════════════════════════════════════════════════════════════════════
 %% LOCAL FUNCTIONS
