@@ -282,45 +282,47 @@ end
 %% ══════════════════════════════════════════════════════════════════════════════
 %% FIGURE 1 — MAIN: T_SW, F_RACK AND PER-WHEEL KINGPIN MOMENT VS AY
 %% ══════════════════════════════════════════════════════════════════════════════
-figure('Name', 'AR26 Steering Moment vs Lateral Acceleration', ...
+figure('Name', 'AR26 Pinion Torque vs Lateral Acceleration', ...
        'Position', [80 80 1050 460]);
 
 subplot(1,2,1);
 yyaxis left
-plot(ay_g_vec, T_SW_vec, 'b-', 'LineWidth', 2);
-ylabel('Steering wheel torque T_{SW} (Nm)');
+plot(ay_g_vec, T_SW_vec, 'LineWidth', 4);
+ylabel('Pinion torque T_{SW} (Nm)', 'FontSize', 15);
 ylim([min(T_SW_vec)*1.15 - 0.01, max(T_SW_vec)*1.15 + 0.01]);
 yyaxis right
-plot(ay_g_vec, F_rack_vec, 'r-', 'LineWidth', 1.5);
-ylabel('Rack force F_{rack} (N)');
-xlabel(x_label);
-title('T_{SW} and F_{rack}  (signed — follows rotation direction)');
+plot(ay_g_vec, F_rack_vec, 'LineWidth', 1.5);
+ylabel('Rack force F_{rack} (N)', 'FontSize', 15);
+xlabel('Lateral Acceleration (g)', 'FontSize', 15);
+title('T_{P} and F_{rack}', 'FontSize', 20);
 yline(0, 'k-', 'LineWidth', 0.5, 'HandleVisibility', 'off');
 if strcmp(INPUT_MODE, 'sweep')
     xline(0, 'k:', 'LineWidth', 1, 'HandleVisibility', 'off');
 end
 grid on;
-legend('T_{SW}', 'F_{rack}', 'Location', 'north');
+legend('T_{SW}', 'F_{rack}', 'Location', 'north', 'FontSize', 12);
 
 subplot(1,2,2);
-plot(ay_g_vec, M_kp_R_vec, 'b-', 'LineWidth', 2, ...
-    'DisplayName', 'Right wheel M_{kp}'); hold on;
-plot(ay_g_vec, M_kp_L_vec, 'r-', 'LineWidth', 2, ...
-    'DisplayName', 'Left wheel M_{kp}');
-plot(ay_g_vec, M_kp_R_vec + M_kp_L_vec, 'k--', 'LineWidth', 1.5, ...
-    'DisplayName', 'Total M_{kp} (both)');
+plot(ay_g_vec, M_kp_R_vec, 'LineWidth', 2, ...
+    'DisplayName', 'Right wheel M_{sa}'); hold on;
+plot(ay_g_vec, M_kp_L_vec, 'LineWidth', 2, ...
+    'DisplayName', 'Left wheel M_{sa}');
+plot(ay_g_vec, M_kp_R_vec + M_kp_L_vec, 'Color',[0.466, 0.674, 0.188], 'LineWidth', 1.5, ...
+    'DisplayName', 'Total M_{sa} (both)');
+xlim([-3 3])
 if strcmp(INPUT_MODE, 'sweep')
     xline(0, 'k:', 'LineWidth', 1, 'HandleVisibility', 'off');
 end
-xlabel(x_label);
-ylabel('Kingpin moment M_{kp} (Nm)');
-title({'Kingpin Moment per Physical Wheel'; ...
-       'Right outer at +a_y  |  Left outer at -a_y'});
+xlabel('Lateral Acceleration (g)', 'FontSize', 15);
+ylabel('Steering axis moment M_{sa} (Nm)', 'FontSize', 15);
+title({'Steering axis Moment per Wheel'}, 'FontSize', 20);
 legend('Location', 'north');
 grid on;
+set(gcf, 'Units', 'centimeters', 'Position', [30, 20, 35, 11]); % Screen size
+set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [30, 20, 35, 21]); % Export size
 
-sgtitle('AR26 — Steering Moment vs Lateral Acceleration', ...
-    'FontSize', 12, 'FontWeight', 'bold');
+sgtitle('Pinion Torque vs Lateral Acceleration', ...
+    'FontSize', 25, 'FontWeight', 'bold');
 
 %% ══════════════════════════════════════════════════════════════════════════════
 %% FIGURE 2 — DATA MODE: time history + histogram
@@ -506,11 +508,11 @@ end
 %% ══════════════════════════════════════════════════════════════════════════════
 %% FIGURE 3 — DIAGNOSTIC BRUSH SWEEP AT +AY_DIAG_G
 %% ══════════════════════════════════════════════════════════════════════════════
-%figure('Name', sprintf('Brush Sweep @ +%.1fg  (right=outer)', AY_DIAG_G), ...
-      % 'Position', [0 80 2560 560]);
+figure('Name', sprintf('Brush Sweep @ +%.1fg  (right=outer)', AY_DIAG_G), ...
+      'Position', [0 80 2560 560]);
 
-%subplot(1,3,1);
-figure
+subplot(1,3,1);
+%figure
 plot(alphas, Fy_Rd, 'LineWidth',3,   'DisplayName','Right (outer)'); hold on;
 plot(alphas, Fy_Ld, 'LineWidth',2.5, 'DisplayName','Left (inner)');
 xline(alphas(idx_Rd),'Color',[0, 0.4470, 0.7410],'LineStyle','--','LineWidth',1.5,'HandleVisibility','off');
@@ -522,11 +524,11 @@ plot(alphas(idx_Ld),Fy_Ld(idx_Ld),'ro','MarkerFaceColor',[0.8500, 0.3250, 0.0980
 grid on; legend('Location','southeast','FontSize',12);
 xlabel('\alpha (deg)', 'FontSize',15); ylabel('F_y (N)', 'FontSize',15);
 title('Lateral Force', 'FontSize', 20);
-set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 10]); % Screen size
-set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
+%set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 10]); % Screen size
+%set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
 
-%subplot(1,3,2);
-figure
+subplot(1,3,2);
+%figure
 yyaxis left
 plot(alphas,Mz_Rd,'Color',[0 0.447 0.741],'LineWidth',3,  'DisplayName','M_z right'); hold on;
 plot(alphas,Mz_Ld,'Color',[0.85 0.325 0.098],'LineWidth',2.5,'DisplayName','M_z left');
@@ -540,11 +542,11 @@ ylabel('Pneumatic trail t (mm)','Color',[0.929, 0.694, 0.125], 'FontSize',15);
 grid on; legend('Location','northeast','FontSize',12);
 xlabel('\alpha (deg)', 'FontSize',15);
 title('Aligning Moment and Pneumatic Trail', 'FontSize',20);
-set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 10]); % Screen size
-set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
+%set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 10]); % Screen size
+%set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
 
-%subplot(1,3,3);
-figure
+subplot(1,3,3);
+%figure
 plot(alphas,Kp_Rd,'Color',[0 0.447 0.741],'LineWidth',3,  'DisplayName','M_{kp} right'); hold on;
 plot(alphas,Kp_Ld,'Color',[0.85 0.325 0.098],'LineWidth',2.5,'DisplayName','M_{kp} left');
 xline(alphas(idx_Rd),'Color',[0 0.447 0.741],'LineWidth',1.5,'HandleVisibility','off');
@@ -556,8 +558,8 @@ plot(alphas(idx_Ld),Kp_Ld(idx_Ld),'ro','MarkerFaceColor',[0.85 0.325 0.098],'Mar
 grid on; legend('Location','southeast','FontSize',12);
 xlabel('\alpha (deg)', 'FontSize',15); ylabel('M_{sa}  (Nm)', 'FontSize',15);
 title('Steering Axis Moment','FontSize', 20);
-set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 10]); % Screen size
-set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
+set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 45, 10]); % Screen size
+set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 45, 10]); % Export size
 
 % subplot(2,2,4);
 % T_SW_d   = (Kp_Rd(idx_Rd) + Kp_Ld(idx_Ld)) / L_arm * r_pin;
@@ -570,8 +572,8 @@ set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export
 % title(sprintf('Summary  T_{SW}=%.2f Nm  F_{rack}=%.0f N', T_SW_d, F_rack_d));
 % grid on;
 
-%sgtitle('Brush Sweep (right=outer, left=inner)', ...
-    %'FontSize', 25, 'FontWeight', 'bold');
+sgtitle('Brush Sweep (right=outer, left=inner)', ...
+    'FontSize', 25, 'FontWeight', 'bold');
 
 %% ══════════════════════════════════════════════════════════════════════════════
 %% LOCAL FUNCTIONS
