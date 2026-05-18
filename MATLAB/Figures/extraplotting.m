@@ -40,7 +40,10 @@ figure
 plot(ay_sweep, FzReq_R,LineWidth=3)
 hold on
 plot(ay_sweep, FzReq_L,LineWidth=3)
-xlabel('Lateral Acceleration(g)',FontSize=14)
-ylabel('Required Lateral Force (N)',FontSize=14)
-title('$F_{y,req,i}$ by lateral acceleration',Interpreter='latex',FontSize=18)
+xlabel('Lateral Acceleration(g)',FontSize=15)
+ylabel('Required Lateral Force (N)',FontSize=15)
+title('$F_{y,req,i}$ by lateral acceleration',Interpreter='latex',FontSize=20,FontName="Calibri")
 legend('$F_{y,req,R}$','$F_{y,req,L}$',FontSize = 14, Interpreter='latex')
+set(gcf, 'Units', 'centimeters', 'Position', [10, 5, 25, 11]); % Screen size
+set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [10, 20, 25, 11]); % Export size
+saveas(gcf,'LateralReq','svg')

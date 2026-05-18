@@ -451,7 +451,8 @@ if strcmp(INPUT_MODE, 'data')
         % CData mapped to each vertex. EdgeColor = 'interp' interpolates
         % colour along each edge between consecutive vertices.
         h = patch([x_pos, NaN], [y_pos, NaN], [c_data, NaN], ...
-            'EdgeColor', 'interp', 'FaceColor', 'none', 'LineWidth', 3);
+            'EdgeColor', 'interp', 'FaceColor', 'none', 'LineWidth', 3, ...
+            'DisplayName','Trackmap');
 
         % Diverging blue -> green -> red colormap, centred on zero
         % blue = max negative (hard left), green = zero (straight), red = max positive (hard right)
@@ -493,7 +494,7 @@ end
         [~, i_peak] = max(c_data);
         plot(x_pos(i_peak), y_pos(i_peak), 'kp', 'MarkerSize', 14, ...
             'MarkerFaceColor', [0.85 0.05 0.05], ...
-            'DisplayName', sprintf('Peak %.1f Nm', c_data(i_peak)));
+            'DisplayName', sprintf('Peak', c_data(i_peak)));
         legend('Location', 'northeast', 'FontSize', 12, 'FontName','Helvetica');
         hold off;
 
@@ -501,10 +502,10 @@ end
     end
 
 end
-set(gcf, 'Units', 'centimeters', 'Position', [30, 20, 25, 25]); % Screen size
-set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0, 0, 15, 10]); % Export size
-%saveas(gcf,'trackmapAus','svg');
-
+set(gcf, 'Units', 'centimeters', 'Position', [0, 0, 15, 15]);
+set(gcf, 'PaperUnits', 'centimeters', 'PaperSize', [15, 15]);
+set(gcf, 'PaperPosition', [0, 0, 15, 15]);  % match Position exactly
+exportgraphics(gcf, 'trackmapAus.pdf', 'ContentType', 'vector');
 %% ══════════════════════════════════════════════════════════════════════════════
 %% FIGURE 3 — DIAGNOSTIC BRUSH SWEEP AT +AY_DIAG_G
 %% ══════════════════════════════════════════════════════════════════════════════
@@ -674,7 +675,7 @@ F_tierod_inner = Kp_Ld(idx_Ld) / L_arm;
 F_rack_d       = F_tierod_outer + F_tierod_inner;
 
 load("drysteering.mat")
-otherTp = max(Kp_Rd)./i + max(Kp_Ld)./i
+otherTp = max(Kp_Rd)./i + max(Kp_Ld)./i;
 figure
 plot(delta_deg2,otherTp)
 
