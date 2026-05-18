@@ -16,9 +16,8 @@
 
 clc; clear; close all;
 
-%% ══════════════════════════════════════════════════════════════════════════════
-%% INPUT MODE
-%% ══════════════════════════════════════════════════════════════════════════════
+%% input
+
 INPUT_MODE = 'data';    % 'sweep' or 'data'
 
 % ── If 'data': path to Optimum Lap CSV export ─────────────────────────────────
@@ -35,11 +34,9 @@ N_AY       = 601;       % number of points  (odd -> includes zero)
 % ── Diagnostic brush sweep at this ay value ───────────────────────────────────
 AY_DIAG_G  = 1.5;       % g   (positive; outer = right wheel)
 
-%% ══════════════════════════════════════════════════════════════════════════════
-%% PARAMETERS
-%% ══════════════════════════════════════════════════════════════════════════════
+%%Parameters
 
-%% -- Vehicle (from LTS.m) ----------------------------------------------------
+%% vehicle params
 m       = 293;          % kg   total mass
 L       = 1.540;        % m    wheelbase
 a_cg    = 0.853;        % m    CG to front axle
@@ -48,12 +45,12 @@ t_f     = 1.410;        % m    front track (FULL width)
 g_SI    = 9.81;         % m/s^2
 b_cg    = L - a_cg;     % m    CG to rear axle
 
-%% -- Steering geometry -------------------------------------------------------
+%% steering geometry 
 e       = 15e-3;        % m    mechanical trail          estimate
 L_arm   = 84.55e-3;     % m    steering arm length (LTS.m)
 r_pin   = 20e-3;        % m    pinion radius
 
-%% -- Tyre (.tir file coefficients) -------------------------------------------
+%% tire coefficients 
 PDY1    =  2.1471;
 PDY2    = -0.42791;
 PKY1    = -31.419;
@@ -61,17 +58,16 @@ PKY2    =  1.5115;
 FNOMIN  =  750;         % N
 ap      =  28.55e-3;    % m    contact patch half-length
 
-%% -- Pacejka anonymous functions ---------------------------------------------
+%% Pacejka functions 
 mu_y_fn  = @(Fz) max(PDY1 + PDY2 .* (Fz - FNOMIN) ./ FNOMIN, 0.5);
 Cfa_fn   = @(Fz) abs(PKY1) .* FNOMIN .* sin(2 .* atan(Fz ./ (PKY2 .* FNOMIN)));
 
-%% -- Slip angle sweep vector (computed once) ---------------------------------
+%% slip angle sweep vector 
 N_alpha = 600;
-alphas  = linspace(0, 20, N_alpha);   % deg (always positive magnitude)
+alphas  = linspace(0, 20, N_alpha);   % deg 
 
-%% ══════════════════════════════════════════════════════════════════════════════
-%% LOAD INPUT DATA
-%% ══════════════════════════════════════════════════════════════════════════════
+
+%% input daata
 switch INPUT_MODE
     case 'sweep'
         % Signed sweep: negative = left turn, positive = right turn
@@ -135,9 +131,9 @@ switch INPUT_MODE
         fprintf('  ay range: [%.3f, %.3f] G\n', min(ay_g_vec), max(ay_g_vec));
 end
 
-%% ══════════════════════════════════════════════════════════════════════════════
-%% SWEEP OVER AY (signed)
-%% ══════════════════════════════════════════════════════════════════════════════
+
+%% Full lap 
+
 % Physical wheel convention (fixed to car body):
 %   Right wheel = positive-ay side  (outer when ay > 0, inner when ay < 0)
 %   Left  wheel = negative-ay side  (outer when ay < 0, inner when ay > 0)
@@ -220,16 +216,16 @@ for k = 1:N_pts
     T_SW_vec(k)   = F_rack_vec(k) * r_pin;
 end
 
-%% ══════════════════════════════════════════════════════════════════════════════
-%% DIAGNOSTIC BRUSH SWEEP AT +AY_DIAG_G
-%% ══════════════════════════════════════════════════════════════════════════════
-ay_d    = abs(AY_DIAG_G) * g_SI;
-dFz_d   = m * ay_d * h_cg * (b_cg / L) / (t_f);
-Fz_Rd   = Fz_static + dFz_d;   % right = outer at positive ay
-Fz_Ld   = max(Fz_static - dFz_d, 0);
 
-mu_Rd = mu_y_fn(Fz_Rd); Cfa_Rd = Cfa_fn(Fz_Rd);
-mu_Ld = mu_y_fn(Fz_Ld); Cfa_Ld = Cfa_fn(Fz_Ld);
+%% Sweep at constant G (steady-state)
+
+ay_d    = abs(AY_DIAG_G) * g_SI; %lateral acc
+dFz_d   = m * ay_d * h_cg * (b_cg / L) / (t_f); %load transfer
+Fz_Rd   = Fz_static + dFz_d;   % right wheel normal load w/ load trans
+Fz_Ld   = max(Fz_static - dFz_d, 0); % Left wheel normal load w/ load trans
+
+mu_Rd = mu_y_fn(Fz_Rd); Cfa_Rd = Cfa_fn(Fz_Rd); % right wheel coeffs at given Fz
+mu_Ld = mu_y_fn(Fz_Ld); Cfa_Ld = Cfa_fn(Fz_Ld); % left wheel coeffs at given Fz
 
 Fy_Rd = zeros(1,N_alpha); Mz_Rd = zeros(1,N_alpha);
 Kp_Rd = zeros(1,N_alpha);  T_Rd  = zeros(1,N_alpha);
@@ -247,9 +243,9 @@ denom_d    = max(Fz_Rd + Fz_Ld, 1);
 idx_Rd = find_op(Fy_Rd, Fy_total_d * Fz_Rd / denom_d, N_alpha);
 idx_Ld = find_op(Fy_Ld, Fy_total_d * Fz_Ld / denom_d, N_alpha);
 
-%% ══════════════════════════════════════════════════════════════════════════════
+
 %% PRINT SUMMARY
-%% ══════════════════════════════════════════════════════════════════════════════
+
 % Peak in either direction (max of |T_SW|), plus signed extremes
 [T_SW_absmax, idx_peak] = max(abs(T_SW_vec));
 T_SW_max_pos = max(T_SW_vec);
@@ -676,6 +672,13 @@ exportgraphics(gcf, 'brush_sweep_1p5g.pdf', 'ContentType', 'vector');
 F_tierod_outer = Kp_Rd(idx_Rd) / L_arm;
 F_tierod_inner = Kp_Ld(idx_Ld) / L_arm;
 F_rack_d       = F_tierod_outer + F_tierod_inner;
+
+load("drysteering.mat")
+otherTp = max(Kp_Rd)./i + max(Kp_Ld)./i
+figure
+plot(delta_deg2,otherTp)
+
+
 %%
 
 %% ══════════════════════════════════════════════════════════════════════════════
